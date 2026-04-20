@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: rgba(10,12,15,0.97);
+    border: 1px solid #1e2530;
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    color: #c8d4e0;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    user-select: none;
+    -webkit-app-region: drag;
+  }
+  .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .logo-icon {
+    font-size: 48px;
+    color: #00e5a0;
+    filter: drop-shadow(0 0 12px #00e5a080);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { filter: drop-shadow(0 0 12px #00e5a080); }
+    50%      { filter: drop-shadow(0 0 24px #00e5a0cc); }
+  }
+  .logo-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: #ffffff;
+  }
+  .logo-sub {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #00e5a0;
+    opacity: 0.8;
+  }
+  .status-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 320px;
+  }
+  .status-text {
+    font-size: 11px;
+    color: #5a6880;
+    letter-spacing: 0.5px;
+    min-height: 16px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .progress-track {
+    width: 100%;
+    height: 3px;
+    background: #1e2530;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00b87c, #00e5a0);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px #00e5a060;
+  }
+  .dots {
+    display: flex; gap: 5px;
+  }
+  .dot {
+    width: 5px; height: 5px;
+    background: #1e2530;
+    border-radius: 50%;
+    animation: dot-blink 1.4s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: .2s; }
+  .dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes dot-blink {
+    0%,80%,100% { background: #1e2530; }
+    40%          { background: #00e5a0; }
+  }
+  .version {
+    position: absolute;
+    bottom: 14px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #2a3340;
+  }
+</style>
+</head>
+<body>
+  <div class="logo">
+    <div class="logo-icon">◈</div>
+    <div class="logo-name">SYNAPSE</div>
+    <div class="logo-sub">LOCAL v3 · AUTONOMOUS AI</div>
+  </div>
+
+  <div class="status-block">
+    <div class="status-text" id="msg">Initializing…</div>
+    <div class="progress-track">
+      <div class="progress-bar" id="bar"></div>
+    </div>
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div class="version">v3.0.0</div>
+
+<script>
+  if (window.synapse) {
+    window.synapse.onStatus(({ msg, progress }) => {
+      document.getElementById('msg').textContent = msg || ''
+      if (progress !== null && progress !== undefined) {
+        document.getElementById('bar').style.width = progress + '%'
+      }
+    })
+  }
+</script>
+</body>
+</html>
