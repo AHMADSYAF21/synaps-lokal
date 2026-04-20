@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: synapse-ollama
+    ports: ["11434:11434"]
+    volumes: [ollama-data:/root/.ollama]
+    restart: unless-stopped
+    # GPU: uncomment below
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices: [{driver:nvidia,count:1,capabilities:[gpu]}]
+
+  backend:
+    build: {context: ./backend, dockerfile: Dockerfile}
+    container_name: synapse-backend
+    ports: ["8000:8000"]
+    volumes:
+      - ./backend:/app
+      - ./workspace:/app/workspace
+      - chroma-data:/app/data/chroma
+      - skills-data:/app/data
+    environment:
+      OLLAMA_BASE_URL:      http://ollama:11434
+      GENERAL_MODEL:        llama3
+      CODER_MODEL:          deepseek-coder
+      EMBEDDING_MODEL:      nomic-embed-text
+      CHROMA_PATH:          /app/data/chroma
+      SKILL_DB_PATH:        /app/data/skills.db
+      CAPABILITIES_DIR:     /app/data/capabilities
+      EVOLUTION_LOG_PATH:   /app/data/evolution.jsonl
+      MAX_ITERATIONS:       "5"
+      HEAL_INTERVAL_SEC:    "60"
+      HOST:                 0.0.0.0
+      PORT:                 "8000"
+    depends_on: [ollama]
+    restart: unless-stopped
+
+  frontend:
+    build: {context: ./frontend, dockerfile: Dockerfile}
+    container_name: synapse-frontend
+    ports: ["3000:3000"]
+    environment:
+      VITE_API_URL: http://localhost:8000
+    depends_on: [backend]
+    restart: unless-stopped
+
+volumes:
+  ollama-data:
+  chroma-data:
+  skills-data:
