@@ -1,96 +1,33 @@
 {
-  "name": "synapse-local",
+  "name": "synapse-local-frontend",
   "version": "3.0.0",
-  "description": "Synapse Local — Autonomous AI, 100% Offline",
-  "main": "main.js",
-  "author": "Synapse",
-  "license": "MIT",
   "private": true,
-
   "scripts": {
-    "start":         "electron .",
-    "dev":           "ELECTRON_IS_DEV=1 electron .",
-    "build:win":     "electron-builder --win",
-    "build:mac":     "electron-builder --mac",
-    "build:linux":   "electron-builder --linux",
-    "build:all":     "electron-builder --win --mac --linux",
-    "dist":          "npm run build:linux"
+    "dev":             "vite --host 0.0.0.0 --port 3000",
+    "build":           "vite build",
+    "build:electron":  "vite build --mode electron",
+    "build:android":   "vite build --mode android",
+    "preview":         "vite preview --host 0.0.0.0 --port 3000",
+    "cap:add:android": "npx cap add android",
+    "cap:sync":        "npx cap sync android",
+    "cap:open":        "npx cap open android",
+    "cap:build":       "npm run build:android && npx cap sync android",
+    "apk:debug":       "npm run cap:build && cd android && ./gradlew assembleDebug",
+    "apk:release":     "npm run cap:build && cd android && ./gradlew assembleRelease"
   },
-
-  "dependencies": {},
-
+  "dependencies": {
+    "react":                   "^18.3.1",
+    "react-dom":               "^18.3.1",
+    "@capacitor/core":         "^6.1.0",
+    "@capacitor/android":      "^6.1.0",
+    "@capacitor/splash-screen":"^6.0.2",
+    "@capacitor/status-bar":   "^6.0.1",
+    "@capacitor/preferences":  "^6.0.2",
+    "@capacitor/network":      "^6.0.2"
+  },
   "devDependencies": {
-    "electron":           "^31.0.0",
-    "electron-builder":   "^24.13.3"
-  },
-
-  "build": {
-    "appId":       "com.synapse.local",
-    "productName": "Synapse Local",
-    "copyright":   "Synapse Local v3",
-
-    "directories": {
-      "output": "../dist-electron",
-      "buildResources": "assets"
-    },
-
-    "files": [
-      "main.js",
-      "preload.js",
-      "splash.html",
-      "assets/**",
-      "../backend/**",
-      "../frontend/dist/**",
-      "!../backend/.venv/**",
-      "!../backend/data/**",
-      "!../backend/__pycache__/**",
-      "!../backend/core/__pycache__/**",
-      "!../frontend/node_modules/**",
-      "!../frontend/src/**"
-    ],
-
-    "extraResources": [
-      { "from": "../backend", "to": "app/backend",  "filter": ["**/*", "!.venv/**", "!data/**", "!**/__pycache__/**"] },
-      { "from": "../frontend/dist", "to": "app/frontend/dist" }
-    ],
-
-    "win": {
-      "target":     [{ "target": "nsis", "arch": ["x64"] }],
-      "icon":       "assets/icon.ico",
-      "artifactName": "Synapse-Local-Setup-${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick":              false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon":         "assets/icon.ico",
-      "uninstallerIcon":       "assets/icon.ico",
-      "installerHeaderIcon":   "assets/icon.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName":          "Synapse Local"
-    },
-
-    "mac": {
-      "target":     [{ "target": "dmg", "arch": ["x64", "arm64"] }],
-      "icon":       "assets/icon.icns",
-      "category":   "public.app-category.productivity",
-      "artifactName": "Synapse-Local-${version}.${ext}"
-    },
-    "dmg": {
-      "contents": [
-        { "x": 130, "y": 220 },
-        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
-      ]
-    },
-
-    "linux": {
-      "target":     [
-        { "target": "AppImage", "arch": ["x64"] },
-        { "target": "deb",      "arch": ["x64"] }
-      ],
-      "icon":       "assets/icon.png",
-      "category":   "Utility",
-      "artifactName": "Synapse-Local-${version}.${ext}"
-    }
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite":                 "^5.3.1",
+    "@capacitor/cli":       "^6.1.0"
   }
 }
