@@ -1,0 +1,27 @@
+# ── Core API ──────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+python-multipart==0.0.9
+
+# ── HTTP client (Ollama interface) ────────────────────────────
+httpx==0.27.0
+
+# ── Vector Memory ─────────────────────────────────────────────
+chromadb==0.5.0
+
+# ── SQLite async (Skill Library) ──────────────────────────────
+aiosqlite==0.20.0
+
+# ── RAG Document Processing ───────────────────────────────────────
+pdfplumber==0.11.0
+python-docx==1.1.2
+python-multipart==0.0.9
+
+# ── Already included (confirming) ────────────────────────────────
+# httpx, chromadb, fastapi, uvicorn, pydantic, aiosqlite
+
+# ── Voice ─────────────────────────────────────────────────────────
+faster-whisper==1.0.3
+edge-tts==6.1.12
+pyttsx3==2.90
