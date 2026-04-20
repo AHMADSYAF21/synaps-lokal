@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r backend/requirements.txt
+      - name: Syntax check
+        run: |
+          python -m py_compile backend/main.py backend/config.py
+          for f in backend/core/*.py; do python -m py_compile "$f"; done
+          echo "All Python files OK"
+      - name: Import check
+        working-directory: backend
+        run: |
+          python -c "
+          from config import Config
+          from core.llm import LLMService
+          from core.memory import MemoryService
+          from core.tools import ToolRegistry
+          from core.agents import AgentOrchestrator
+          from core.reasoning import ReasoningEngine
+          from core.capability_engine import CapabilityEngine, ToolBase
+          from core.skill_library import SkillLibrary
+          from core.planner import Planner
+          from core.self_heal import SelfHealingMonitor
+          from core.self_improve_v2 import SelfImprovementV2
+          from core.meta_agent import MetaAgent
+          print('All imports OK')
+          "
+
+  frontend:
+    name: Frontend Node
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package.json
+      - run: cd frontend && npm install
+      - run: cd frontend && npm run build
+      - run: cd frontend && npm run build:electron
+        env:
+          VITE_API_URL: http://localhost:8000
