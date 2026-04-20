@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0a0c0f" rx="80"/>
+  <polygon points="256,80 420,170 420,342 256,432 92,342 92,170"
+    fill="none" stroke="#00e5a0" stroke-width="20"/>
+  <polygon points="256,140 370,200 370,312 256,372 142,312 142,200"
+    fill="#00e5a020" stroke="#00e5a0" stroke-width="8"/>
+  <circle cx="256" cy="256" r="40" fill="#00e5a0"/>
+  <text x="256" y="490" text-anchor="middle"
+    font-family="monospace" font-size="36" fill="#00e5a080"
+    letter-spacing="8">SYNAPSE</text>
+</svg>
