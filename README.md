@@ -36,7 +36,7 @@ Synapse Local is a fully autonomous AI system that runs **100% offline** on your
 ## Quick Start
 
 ```bash
-git clone https://github.com/your-username/synapse-local.git
+git clone https://github.com/AHMADSYAF21/synapse-local.git
 cd synapse-local
 chmod +x scripts/*.sh build.sh
 ./scripts/install.sh   # ~15 min (downloads AI models)
